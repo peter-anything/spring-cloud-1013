@@ -1,0 +1,11 @@
+server:
+  port: 9999
+spring:
+  application:
+    name: nacos-order-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.2.112:8848 #配置Nacos地址
+    loadbalancer:
+      ribb

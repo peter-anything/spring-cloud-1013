@@ -1,0 +1,157 @@
+plugins {
+    id 'java'
+    id 'java-library'
+    id 'org.springframework.boot' version '2.7.16'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+}
+
+
+repositories {
+    mavenLocal()
+    maven { url "https://maven.aliyun.com/repository/public" }
+    mavenCentral()
+    jcenter()
+    maven { url 'https://repo.spring.io/plugins-release' }
+    maven { url "https://plugins.gradle.org/m2/" }
+}
+
+subprojects {
+
+    ext {
+        set('springBootVersion', "2.7.16")
+        set('springCloudAlibabaVersion', "2021.0.4.0")
+        set('springCloudVersion', "2021.0.4")
+        set('lombokVersion', "1.18.12")
+        set('dsm-common-dm-mybatis.version', "1.0.0")
+        protobufVersion = '3.10.0'
+        protobufPluginVersion = '0.8.18'
+        grpcVersion = '1.25.0'
+        grpcSpringbootStarterVersion = '2.13.1.RELEASE'
+    }
+
+    apply plugin: 'java-library'
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+    // java编译的时候缺省状态下会因为中文字符而失败
+    [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
+
+    repositories {
+//        maven{
+//            url "http://nexus.jkservice.org/repository/jk-common/"
+//            authentication {
+//                basic(BasicAuthentication)
+//            }
+//            credentials {
+//                username = 'zhangyajun'
+//                password = 'JKSTACKPBzyj@1'
+//            }
+//        }
+//        maven{
+//            url "http://nexus.jkservice.org/repository/jkstack-dsm/"
+//            authentication {
+//                basic(BasicAuthentication)
+//            }
+//            credentials {
+//                username = 'zhangyajun'
+//                password = 'JKSTACKPBzyj@1'
+//            }
+//        }
+//        maven{
+//            url "http://nexus.jkservice.org/repository/jkstack-dpa/"
+//            authentication {
+//                basic(BasicAuthentication)
+//            }
+//            credentials {
+//                username = 'zhangyajun'
+//                password = 'JKSTACKPBzyj@1'
+//            }
+//        }
+        /*maven{
+            url "http://192.168.1.181/repository/maven-releases/"
+            authentication {
+                basic(BasicAuthentication)
+            }
+            credentials {
+                username = 'jkpublic'
+                password = 'JKpublic@1'
+            }
+        }*/
+        mavenLocal()
+        maven { url "https://maven.aliyun.com/repository/public" }
+    }
+
+
+    configurations {
+        // 排除 tomcat 依赖（使用 undertow）
+        implementation.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+        implementation.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+
+    }
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-undertow'
+        implementation 'org.springframework.boot:spring-boot-starter-actuator'
+        implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+        implementation 'org.springframework.boot:spring-boot-starter-validation'
+        compileOnly "org.projectlombok:lombok:${lombokVersion}"
+        annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+        testImplementation('org.springframework.boot:spring-boot-starter-test') {
+            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+        }
+    }
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+            mavenBom "com.alibaba.cloud:spring-cloud-alibaba-dependencies:${springCloudAlibabaVersion}"
+        }
+    }
+
+    test {
+        useJUnitPlatform()
+        ignoreFailures = true
+    }
+
+    /**
+     * clean 命令时删除 logs 目录
+     */
+    task cleanOutDir(type: Delete) {
+        delete "${projectDir}/logs"
+        delete "${rootDir}/logs"
+    }
+    tasks.clean.dependsOn(cleanOutDir)
+
+
+//    uploadArchives {
+//        repositories {
+//            mavenDeployer {
+//                snapshotRepository(url: "http://192.168.1.181/repository/maven-snapshots/") {
+//                    authentication(userName: "jkpublic", password: "JKpublic@1")
+//                }
+//                repository(url: "http://192.168.1.181/repository/maven-releases/") {
+//                    authentication(userName: "jkpublic", password: "JKpublic@1")
+//                }
+//            }
+//        }
+//    }
+//    project.ext {
+//        nexusUrl = 'http://192.168.1.181/repository/maven-releases/'
+//        username = 'jkpublic'
+//        password = 'JKpublic@1'
+//    }
+
+    /*uploadArchives {
+        repositories {
+            mavenDeployer {
+                snapshotRepository(url: "${nexusUrl}") {
+                    authentication(userName: "${username}", password: "${password}")
+                }
+                repository(url: "${nexusUrl}") {
+                    authentication(userName: "${username}", password: "${password}")
+                }
+            }
+        }
+    }*/
+}

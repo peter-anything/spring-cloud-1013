@@ -1,0 +1,7 @@
+group 'com.peter.nacos'
+description '配置中心模块'
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+//    implementation 'com.pig4cloud.plugin:idempotent-spring-boot-starter:0.1.0'
+}

@@ -1,0 +1,8 @@
+group 'com.peter.nacos'
+description '配置中心模块'
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery'
+}
+

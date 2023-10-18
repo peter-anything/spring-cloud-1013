@@ -1,0 +1,5 @@
+rootProject.name = 'springcloud-demo-1013'
+include 'user-service'
+include 'order-service'
+include 'macro-common'
+
