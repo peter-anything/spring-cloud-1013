@@ -2,4 +2,8 @@ rootProject.name = 'springcloud-demo-1013'
 include 'user-service'
 include 'order-service'
 include 'macro-common'
+include 'chat-server'
+include 'chat-client'
+include 'chat-common'
+include 'chat-all'
 
