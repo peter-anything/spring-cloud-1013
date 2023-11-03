@@ -7,19 +7,19 @@ import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
-import io.netty.handler.timeout.IdleStateHandler;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-@Component
 public class ClientHandlerInitializer extends ChannelInitializer<Channel> {
-    @Autowired
-    HeartbeatHandler heartbeatHandler;
+    private ChatClient chatClient;
+
+    public ClientHandlerInitializer(ChatClient chatClient) {
+        this.chatClient = chatClient;
+    }
 
     @Override
     protected void initChannel(Channel ch) throws Exception {
+        HeartbeatHandler heartbeatHandler = new HeartbeatHandler(this.chatClient);
         ch.pipeline()
-                .addLast(new IdleStateHandler(0, 10, 0))
+                .addLast(new ClientIdleStateHandler())
                 .addLast(new ProtobufVarint32FrameDecoder())
                 .addLast(new ProtobufDecoder(MessageBase.Message.getDefaultInstance()))
                 .addLast(new ProtobufVarint32LengthFieldPrepender())

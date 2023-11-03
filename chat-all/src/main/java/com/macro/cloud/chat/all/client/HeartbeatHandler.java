@@ -14,16 +14,18 @@ import org.springframework.stereotype.Component;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-@Component
 @Slf4j
 public class HeartbeatHandler extends ChannelInboundHandlerAdapter {
     private final ChatClient chatClient;
-    @Autowired
+
     public HeartbeatHandler(ChatClient nettyClient) {
+        System.out.println("HeartbeatHandler ======");
         this.chatClient = nettyClient;
     }
+
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+        System.out.println("userEventTriggered ======");
         if (evt instanceof IdleStateEvent) {
             IdleStateEvent idleStateEvent = (IdleStateEvent) evt;
             if (idleStateEvent.state() == IdleState.WRITER_IDLE) {
@@ -41,8 +43,22 @@ public class HeartbeatHandler extends ChannelInboundHandlerAdapter {
     }
 
     @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        System.out.println("channel read : " + msg);
+        super.channelRead(ctx, msg);
+    }
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        //如果运行过程中服务端挂了,执行重连机制
+        System.out.println("channelActive ======");
+        super.channelActive(ctx);
+    }
+
+    @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         //如果运行过程中服务端挂了,执行重连机制
+        System.out.println("channelInactive ======");
         EventLoop eventLoop = ctx.channel().eventLoop();
         eventLoop.schedule(() -> chatClient.start(), 10L, TimeUnit.SECONDS);
         super.channelInactive(ctx);

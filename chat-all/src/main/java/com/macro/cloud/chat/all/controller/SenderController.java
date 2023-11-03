@@ -11,14 +11,14 @@ import java.util.UUID;
 @RestController
 public class SenderController {
     @Autowired
-    private ChatClient nettyClient;
+    private ChatClient chatClient;
 
     @GetMapping("/send")
     public String send(String content) {
         MessageBase.Message message = MessageBase.Message.newBuilder().setCmd(MessageBase.Message.CommandType.NORMAL)
                 .setContent(content)
                 .setRequestId(UUID.randomUUID().toString()).build();
-        nettyClient.sendMsg(message);
+        chatClient.sendMsg(message);
         return "send ok";
     }
 }
