@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+}
+
+version 'unspecified'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation(project(':dubbo-user-service-api'))
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.apache.dubbo:dubbo-spring-boot-starter:3.2.9'
+    implementation 'com.alibaba.nacos:nacos-client:2.1.0'
+}
+
+test {
+    useJUnitPlatform()
+}

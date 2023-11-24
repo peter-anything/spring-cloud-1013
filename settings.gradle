@@ -6,4 +6,7 @@ include 'chat-server'
 include 'chat-client'
 include 'chat-common'
 include 'chat-all'
+include 'dubbo-user-service-api'
+include 'dubbo-user-service-provider'
+include 'dubbo-user-service-consumer'
 

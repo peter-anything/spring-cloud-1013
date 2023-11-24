@@ -1,0 +1,16 @@
+server:
+  port: 8001
+
+spring:
+  application:
+    name: dubbo-user-service-provider
+
+dubbo:
+  # 注册中心地址
+  registry:
+    address: nacos://localhost:8848/
+  protocol:
+    name: dubbo
+    port: 20880
+  provider:
+    host: 127.0.0.1
