@@ -6,6 +6,18 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 192.168.2.112:8848 #配置Nacos地址
+        server-addr: 192.168.2.125:8848 #配置Nacos地址
     loadbalancer:
-      ribb
+      ribbon
+logging:
+  level:
+    com.macro.cloud.api: DEBUG
+feign:
+  client:
+    config:
+      default: #配置作用于整个项目中的feign客户端，
+        loggerLevel: HEADERS
+      nacos-user-service: #配置作用于某个特定的feign客户端
+        loggerLevel: FULL
+  okhttp:
+    enabled: true

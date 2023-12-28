@@ -3,8 +3,11 @@ description '配置中心模块'
 
 dependencies {
     implementation project(':macro-common')
+    implementation project(':user-service')
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery'
     implementation 'org.springframework.cloud:spring-cloud-starter-loadbalancer'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation 'io.github.openfeign:feign-okhttp:11.8'
 }
 
